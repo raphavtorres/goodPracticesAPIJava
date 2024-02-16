@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://127.0.0.1:5432/adopet?createDatabaseIfNotExist=true
+    username: root
+    password: 123
+  mail:
+    host:
+      smtp: example.com
+    port: 587
+    username: username
+    password: password
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true

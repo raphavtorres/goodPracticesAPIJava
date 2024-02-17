@@ -95,6 +95,10 @@ public class AdocaoController {
         email.setText("Olá " +adocao.getTutor().getNome() +"!\n\nInfelizmente sua adoção do pet " +adocao.getPet().getNome() +", solicitada em " +adocao.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")) +", foi reprovada pelo abrigo " +adocao.getPet().getAbrigo().getNome() +" com a seguinte justificativa: " +adocao.getJustificativaStatus());
         emailSender.send(email);
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5680cb8102617b972d9358ced3c68430fc0cfbe9
         return ResponseEntity.ok().build();
     }
 

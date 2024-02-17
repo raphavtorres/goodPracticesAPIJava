@@ -1,11 +1,19 @@
 spring:
   datasource:
     url: jdbc:postgresql://127.0.0.1:5432/adopet?createDatabaseIfNotExist=true
+<<<<<<< HEAD
     username: postgres
     password: root
 
   mail:
     host: smtp.example.com
+=======
+    username: root
+    password: 123
+  mail:
+    host:
+      smtp: example.com
+>>>>>>> 5680cb8102617b972d9358ced3c68430fc0cfbe9
     port: 587
     username: username
     password: password

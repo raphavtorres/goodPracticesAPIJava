@@ -9,38 +9,48 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-@Entity
+
+
+// CONVENTION OVER CONFIGURATION (revisar na aula)
+// siga a convenção para não ter que configurar
+
+@Entity  // entidade da JPA
 @Table(name = "adocoes")
 public class Adocao {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+//    @Column(name = "id")  -- não preciso pq a convenção já diz que o nome da coluna == nome atributo
     private Long id;
 
-    @Column(name = "data")
     private LocalDateTime data;
 
-    @ManyToOne
-    @JsonBackReference("tutor_adocoes")
-    @JoinColumn(name = "tutor_id")
+    @ManyToOne(fetch = FetchType.LAZY)  // Relacionamentos "...ToOne" por padrão são FetchType.EAGER
+//    @JsonBackReference("tutor_adocoes")  -- só era necessário quando estavamos passando JPAs no controller
     private Tutor tutor;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pet_id")
-    @JsonManagedReference("adocao_pets")
+//    @JsonManagedReference("adocao_pets") -- só era necessário quando estavamos passando JPAs no controller
     private Pet pet;
 
-    @Column(name = "motivo")
     private String motivo;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status")
     private StatusAdocao status;
 
-    @Column(name = "justificativa_status")
+//    @Column(name = "justificativa_status") -- também está seguindo convenção
     private String justificativaStatus;
 
+    public Adocao(Tutor tutor, Pet pet, String motivo) {
+        this.tutor = tutor;
+        this.pet = pet;
+        this.motivo = motivo;
+        this.status = StatusAdocao.AGUARDANDO_AVALIACAO;
+        this.data = LocalDateTime.now();
+    }
+
+    public Adocao() {}
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -58,55 +68,36 @@ public class Adocao {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public LocalDateTime getData() {
         return data;
-    }
-
-    public void setData(LocalDateTime data) {
-        this.data = data;
     }
 
     public Tutor getTutor() {
         return tutor;
     }
 
-    public void setTutor(Tutor tutor) {
-        this.tutor = tutor;
-    }
-
     public Pet getPet() {
         return pet;
-    }
-
-    public void setPet(Pet pet) {
-        this.pet = pet;
     }
 
     public String getMotivo() {
         return motivo;
     }
 
-    public void setMotivo(String motivo) {
-        this.motivo = motivo;
-    }
-
     public StatusAdocao getStatus() {
         return status;
-    }
-
-    public void setStatus(StatusAdocao status) {
-        this.status = status;
     }
 
     public String getJustificativaStatus() {
         return justificativaStatus;
     }
 
-    public void setJustificativaStatus(String justificativaStatus) {
-        this.justificativaStatus = justificativaStatus;
+    public void marcarComoAprovado() {
+        this.status = StatusAdocao.APROVADO;
+    }
+
+    public void marcarComoReprovada(String justificativa) {
+        this.status = StatusAdocao.REPROVADO;
+        this.justificativaStatus = justificativa;
     }
 }
